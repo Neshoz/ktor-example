@@ -7,10 +7,10 @@ import com.example.utils.AES
 import java.util.UUID
 
 class UserService(private val userRepository: UserRepository) {
-  fun create(user: RegisterUser): User {
+  suspend fun create(user: CreateUserPayload): UserDTO {
     userRepository.findByEmail(user.email).apply {
       require(this == null) {
-        throw AlreadyExistsException("A user", "that email")
+        throw AlreadyExistsException("User", "email")
       }
     }
     return userRepository.create(
@@ -18,19 +18,19 @@ class UserService(private val userRepository: UserRepository) {
     ) ?: throw InternalServerError()
   }
 
-  fun getById(id: UUID): User {
+  suspend fun getById(id: UUID): UserDTO {
     return userRepository.findById(id) ?: throw NotFoundException(id.toString())
   }
 
-  fun getByEmail(email: String): User? {
+  suspend fun getByEmail(email: String): User? {
     return userRepository.findByEmail(email)
   }
 
-  fun update(user: User): User {
+  suspend fun update(user: User): User {
     return userRepository.update(user)
   }
 
-  fun delete(id: UUID): Boolean {
+  suspend fun delete(id: UUID): Boolean {
     return userRepository.delete(id)
   }
 }

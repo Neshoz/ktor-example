@@ -14,14 +14,14 @@ data class User(
 )
 
 @Serializable
-data class RegisterUser(
+data class CreateUserPayload(
   val email: String,
   val username: String,
   val password: String
 )
 
 @Serializable
-class UserDTO(
+data class UserDTO(
   @Serializable(with = UUIDSerializer::class)
   val id: UUID,
   val email: String,

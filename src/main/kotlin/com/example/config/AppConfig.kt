@@ -1,15 +1,10 @@
 package com.example.config
 
 import com.example.auth.*
+import com.example.database.DatabaseSingleton
+import com.example.exception.*
+import com.example.note.notes
 import com.example.user.*
-import com.example.exception.AuthenticationException
-import com.example.exception.InsufficientCredentialsException
-import com.example.exception.InternalServerError
-import com.example.exception.NotFoundException
-import com.example.post.PostController
-import com.example.post.posts
-import com.example.topic.TopicController
-import com.example.topic.topics
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
@@ -21,20 +16,19 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import io.ktor.util.*
 import org.kodein.di.instance
+import java.util.UUID
 
 fun Application.module() {
+  DatabaseSingleton.init(environment.config)
   val userController by ModulesConfig.kodein.instance<UserController>()
   val authController by ModulesConfig.kodein.instance<AuthController>()
-  val topicController by ModulesConfig.kodein.instance<TopicController>()
-  val postController by ModulesConfig.kodein.instance<PostController>()
 
-  DbConfig.setup()
   install(ContentNegotiation) {
     json()
   }
   install(Sessions) {
     val secretSignKey = hex("45998905450534590")
-    cookie<UserSession>("session-id", SessionStorageMemory()) {
+    cookie<UserPrincipal>("session-id", storage = SessionStorageRepository()) {
       cookie.path = "/"
       cookie.maxAgeInSeconds = 60 * 60 * 24
       cookie.httpOnly = true
@@ -43,7 +37,7 @@ fun Application.module() {
     }
   }
   install(Authentication) {
-    session<UserSession> {
+    session<UserPrincipal> {
       validate { session ->
         session
       }
@@ -71,6 +65,12 @@ fun Application.module() {
         mapOf("message" to cause.message)
       )
     }
+    exception<AlreadyExistsException> { call, cause ->
+      call.respond(
+        HttpStatusCode.BadRequest,
+        mapOf("message" to cause.message)
+      )
+    }
     exception<InternalServerError> { call, cause ->
       call.respond(
         HttpStatusCode.InternalServerError,
@@ -88,7 +88,9 @@ fun Application.module() {
   install(Routing) {
     users(userController)
     auth(authController)
-    topics(topicController)
-    posts(postController)
+    notes()
   }
 }
+
+val ApplicationCall.userId: UUID
+  get() = principal<UserPrincipal>()?.userId ?: throw AuthenticationException()

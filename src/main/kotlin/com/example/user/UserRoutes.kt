@@ -18,7 +18,7 @@ fun Routing.users(userController: UserController) {
   }
   route("me") {
     authenticate {
-      get { userController.getCurrent(this.context) }
+      get { userController.getSessionUser(this.context) }
     }
   }
 }

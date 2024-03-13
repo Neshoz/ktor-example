@@ -1,67 +1,37 @@
 package com.example.user
 
-import com.example.auth.UserSession
-import com.example.exception.AuthenticationException
-import com.example.exception.NotFoundException
-import com.example.utils.getParam
+import com.example.config.userId
 import io.ktor.server.application.*
-import io.ktor.server.auth.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
-import io.ktor.server.sessions.*
 import java.util.UUID
 
 class UserController(private val userService: UserService) {
-  suspend fun register(ctx: ApplicationCall) {
-    ctx.receive<RegisterUser>().apply {
-      userService.create(this).apply {
-        ctx.respond(UserDTO(
-          this.id,
-          this.email,
-          this.username
-        ))
-      }
-    }
+  suspend fun register(call: ApplicationCall) {
+    val payload = call.receive<CreateUserPayload>()
+    val createdUser = userService.create(payload)
+    call.respond(createdUser)
   }
 
-  suspend fun getById(ctx: ApplicationCall) {
-    val id = UUID.fromString(getParam("id", ctx))
-    userService.getById(id).let {
-      ctx.respond(UserDTO(
-        it.id,
-        it.email,
-        it.username
-      ))
-    }
+  suspend fun getById(call: ApplicationCall) {
+    val id = UUID.fromString(call.parameters["id"])
+    val user = userService.getById(id)
+    call.respond(user)
   }
 
-  suspend fun getCurrent(ctx: ApplicationCall) {
-    val session = ctx.sessions.get<UserSession>()
-    requireNotNull(session).apply {
-      userService.getById(UUID.fromString(this.userId)).let {
-        ctx.respond(UserDTO(
-          it.id,
-          it.email,
-          it.username
-        ))
-      }
-    }
+  suspend fun getSessionUser(call: ApplicationCall) {
+    val user = userService.getById(call.userId)
+    call.respond(user)
   }
 
-  suspend fun update(ctx: ApplicationCall) {
-    ctx.receive<User>().also { user ->
-      userService.update(user).apply {
-        ctx.respond(UserDTO(
-          this.id,
-          this.email,
-          this.username
-        ))
-      }
-    }
+  suspend fun update(call: ApplicationCall) {
+    val payload = call.receive<User>()
+    val user = userService.update(payload)
+    call.respond(user)
   }
 
-  suspend fun delete(ctx: ApplicationCall) {
-    ctx.receive<User>().apply {
+  suspend fun delete(call: ApplicationCall) {
+    call.receive<User>().apply {
       userService.delete(this.id)
     }
   }
