@@ -1,6 +1,6 @@
 package com.example.user
 
-import com.example.config.userId
+import com.example.utils.userId
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*

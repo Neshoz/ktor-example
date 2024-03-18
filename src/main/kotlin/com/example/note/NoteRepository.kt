@@ -24,6 +24,13 @@ object NoteRepository {
     note
   }
 
+  suspend fun addUserToNote(userId: UUID, noteId: UUID) = dbQuery {
+    UsersNotesTable.insert {
+      it[UsersNotesTable.userId] = userId
+      it[UsersNotesTable.noteId] = noteId
+    }.resultedValues?.single()
+  }
+
   suspend fun findUserNotes(userId: UUID): List<NoteModel> = dbQuery {
     (UsersNotesTable leftJoin NotesTable)
       .selectAll().where { UsersNotesTable.userId eq userId }

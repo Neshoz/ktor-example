@@ -1,6 +1,7 @@
 package com.example.auth
 
 import com.example.database.DatabaseSingleton.dbQuery
+import com.example.exception.AuthenticationException
 import io.ktor.server.sessions.*
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
@@ -20,7 +21,7 @@ class SessionStorageRepository : SessionStorage {
   override suspend fun read(id: String): String = dbQuery {
     val session = SessionsTable.selectAll().where { SessionsTable.sessionId eq id }.firstOrNull()
     if (session == null) {
-      throw NoSuchElementException("Session $id not found")
+      throw AuthenticationException()
     } else {
       session[SessionsTable.userId].toString()
     }

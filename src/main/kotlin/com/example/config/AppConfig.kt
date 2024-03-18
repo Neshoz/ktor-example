@@ -23,9 +23,7 @@ fun Application.module() {
   val userController by ModulesConfig.kodein.instance<UserController>()
   val authController by ModulesConfig.kodein.instance<AuthController>()
 
-  install(ContentNegotiation) {
-    json()
-  }
+  install(ContentNegotiation) { json() }
   install(Sessions) {
     val secretSignKey = hex("45998905450534590")
     cookie<UserPrincipal>("session-id", storage = SessionStorageRepository()) {
@@ -38,9 +36,7 @@ fun Application.module() {
   }
   install(Authentication) {
     session<UserPrincipal> {
-      validate { session ->
-        session
-      }
+      validate { session -> session }
       challenge {
         throw AuthenticationException()
       }
@@ -92,5 +88,3 @@ fun Application.module() {
   }
 }
 
-val ApplicationCall.userId: UUID
-  get() = principal<UserPrincipal>()?.userId ?: throw AuthenticationException()
