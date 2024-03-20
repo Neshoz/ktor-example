@@ -2,6 +2,10 @@
 
 In this document you will find everything that is related to your task.
 
+## BEFORE YOU GET STARTED
+
+Before you get started on your task, fork the repository, and work towards the forked version.
+
 ## Architecture & Tech stack
 
 The project is built and started using Docker compose.
@@ -37,8 +41,6 @@ The only requirement that we have on tech is that you implement it using either 
 
 You are free to use any libraries you want to accomplish the task, but be ready to
 explain your libraries of choice in the follow-up interview should they be questioned.
-
-**Before you get started, fork the repository, and work towards the forked version.**
 
 ### Requirements
 
