@@ -40,7 +40,7 @@ Add a server with the following credentials
 ## Your assignment
 
 Your assignment is to implement a frontend to [the API](./api.http).
-The only requirement that we have on tech is that you implement it using either React, Angular or Vue, we prefer React.
+The only requirement that we have on tech is that you implement it using either React, Angular or Vue; we prefer React.
 
 You are free to use any libraries you want to accomplish the task, but be ready to
 explain your libraries of choice in the follow-up interview should they be questioned.
