@@ -8,6 +8,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+
   db:
     image: postgres:15-alpine
     volumes:
@@ -21,8 +22,10 @@ services:
       - 5432:5432
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-d", "notes", "-U", "postgres" ]
-      interval: 5s
-      timeout: 5s
+      interval: 10s
+      timeout: 10s
+      retries: 5
+
   pgAdmin:
     image: dpage/pgadmin4
     container_name: pgAdmin

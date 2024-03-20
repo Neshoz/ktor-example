@@ -1,0 +1,96 @@
+@baseUrl = http://localhost:8000
+
+# Sign in user with email and password
+# @prompt email Email of new user
+# @prompt password Password of new user
+POST {{baseUrl}}/login
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}"
+}
+
+###
+
+# Sign out user
+POST {{baseUrl}}/logout
+
+###
+
+# Get the currently logged-in users' notes
+GET {{baseUrl}}/notes
+
+###
+
+# Creates a new note for the currently logged-in user
+# @prompt contents The contents of the note
+POST {{baseUrl}}/notes
+Content-Type: application/json
+
+{
+  "contents": "{{contents}}"
+}
+
+###
+
+# Gets a note by its id
+# @prompt noteId The id of the note
+GET {{baseUrl}}/notes/{{noteId}}
+
+###
+
+# Updates a note with new contents
+# @prompt noteId The id of the note
+# @prompt contents The contents of the note
+PUT {{baseUrl}}/notes/{{noteId}}
+Content-Type: application/json
+
+{
+  "contents": "{{contents}}"
+}
+
+###
+
+# Delete a note
+# @prompt noteId The id of the note
+DELETE {{baseUrl}}/notes/{{noteId}}
+
+###
+
+# Adds a user to a note via their id's
+# @prompt noteId The id of the note
+# @prompt userId The id of the user to invite
+POST {{baseUrl}}/notes/{{noteId}}/{{userId}}
+Content-Type: application/json
+
+###
+
+# Creates a new user with email, password and username
+# @prompt email Email of new user
+# @prompt password Password of new user
+# @prompt username Username of new user
+POST {{baseUrl}}/user
+Content-Type: application/json
+
+{
+  "email": "{{email}}",
+  "password": "{{password}}",
+  "username": "{{username}}"
+}
+
+###
+
+# Gets the currently logged-in user
+GET {{baseUrl}}/me
+
+###
+
+# Updates the currently logged-in users email
+# @prompt email New email of the user
+PUT {{baseUrl}}/me
+Content-Type: application/json
+
+{
+  "email": "{email}}"
+}

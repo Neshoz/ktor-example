@@ -3,12 +3,9 @@ package com.example.user
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 
-fun Routing.users(userController: UserController) {
+fun Routing.users(userController: UserController = UserController()) {
   route("user") {
-    post { userController.register(this.context) }
-    authenticate {
-      put { userController.update(this.context) }
-    }
+    post { userController.create(this.context) }
   }
   route("user/{id}") {
     authenticate {
@@ -19,6 +16,7 @@ fun Routing.users(userController: UserController) {
   route("me") {
     authenticate {
       get { userController.getSessionUser(this.context) }
+      put { userController.update(this.context) }
     }
   }
 }

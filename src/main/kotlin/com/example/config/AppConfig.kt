@@ -20,8 +20,6 @@ import java.util.UUID
 
 fun Application.module() {
   DatabaseSingleton.init(environment.config)
-  val userController by ModulesConfig.kodein.instance<UserController>()
-  val authController by ModulesConfig.kodein.instance<AuthController>()
 
   install(ContentNegotiation) { json() }
   install(Sessions) {
@@ -55,12 +53,6 @@ fun Application.module() {
         mapOf("message" to cause.message)
       )
     }
-    exception<InsufficientCredentialsException> { call, cause ->
-      call.respond(
-        HttpStatusCode.BadRequest,
-        mapOf("message" to cause.message)
-      )
-    }
     exception<AlreadyExistsException> { call, cause ->
       call.respond(
         HttpStatusCode.BadRequest,
@@ -82,8 +74,8 @@ fun Application.module() {
     }
   }
   install(Routing) {
-    users(userController)
-    auth(authController)
+    users()
+    auth()
     notes()
   }
 }

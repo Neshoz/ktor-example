@@ -2,8 +2,9 @@ package com.example.auth
 
 import com.example.exception.InsufficientCredentialsException
 import com.example.user.UserDTO
-import com.example.user.UserService
+import com.example.user.UserRepository
 import com.example.utils.AES
+import com.example.utils.respondError
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -12,15 +13,18 @@ import io.ktor.server.response.*
 import io.ktor.server.sessions.*
 
 class AuthController(
-  private val userService: UserService
+  private val userRepository: UserRepository = UserRepository
 ) {
   suspend fun authenticate(call: ApplicationCall) {
     val payload = call.receive<Credentials>()
-    val user = userService.getByEmail(payload.email) ?: throw InsufficientCredentialsException(
-      "Email or password incorrect"
-    )
+    val user = userRepository.findByEmail(payload.email)
+      ?: return call.respondError(
+        HttpStatusCode.BadRequest,
+        "Email or password incorrect"
+      )
+
     if (user.password != AES.encrypt(payload.password)) {
-      throw InsufficientCredentialsException("Email or password incorrect")
+      return call.respondError(HttpStatusCode.BadRequest, "Wrong email or password")
     }
 
     call.sessions.set(UserPrincipal(user.id))

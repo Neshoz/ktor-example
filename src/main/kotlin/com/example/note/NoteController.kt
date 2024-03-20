@@ -1,6 +1,9 @@
 package com.example.note
 
+import com.example.exception.InternalServerError
+import com.example.utils.respondError
 import com.example.utils.userId
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -19,9 +22,22 @@ class NoteController(private val noteRepository: NoteRepository = NoteRepository
     call.respond(notes)
   }
 
+  suspend fun addUserToNote(call: ApplicationCall) {
+    val noteId = UUID.fromString(call.parameters["id"])
+    val userId = UUID.fromString(call.parameters["userId"])
+    noteRepository.addUserToNote(userId, noteId) ?: call.respondError(
+      HttpStatusCode.InternalServerError,
+      "Internal server error"
+    )
+    call.respond(HttpStatusCode.OK, mapOf("message" to "User $userId added to note $noteId"))
+  }
+
   suspend fun findById(call: ApplicationCall) {
     val id = UUID.fromString(call.parameters["id"])
-    val note = noteRepository.findById(id) ?: throw NoSuchElementException()
+    val note = noteRepository.findById(id) ?: call.respondError(
+      HttpStatusCode.NotFound,
+      "User with $id not found"
+    )
     call.respond(note)
   }
 

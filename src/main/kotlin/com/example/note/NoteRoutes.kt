@@ -13,6 +13,10 @@ fun Routing.notes(noteController: NoteController = NoteController()) {
         get { noteController.findById(this.context) }
         put { noteController.update(this.context) }
         delete { noteController.delete(this.context) }
+
+        route("{userId}") {
+          post { noteController.addUserToNote(this.context) }
+        }
       }
     }
   }

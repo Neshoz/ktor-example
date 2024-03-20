@@ -2,11 +2,12 @@ package com.example.user
 
 import com.example.database.DatabaseSingleton.dbQuery
 import com.example.exception.InternalServerError
+import com.example.utils.AES
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
 import java.util.UUID
 
-class UserRepository {
+object UserRepository {
   suspend fun findByEmail(email: String): User? = dbQuery {
     UsersTable.selectAll().where { UsersTable.email eq email }
       .map(UsersTable::toDomain)
@@ -23,7 +24,7 @@ class UserRepository {
     UsersTable.insert {
       it[email] = user.email
       it[username] = user.username
-      it[password] = user.password
+      it[password] = AES.encrypt(user.password)
     }.resultedValues?.first()?.let(UsersTable::toDto)
   }
 
