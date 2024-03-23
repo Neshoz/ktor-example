@@ -51,5 +51,6 @@ class NoteController(private val noteRepository: NoteRepository = NoteRepository
     UUID.fromString(call.parameters["id"]).let {
       noteRepository.delete(it)
     }
+    call.respond(HttpStatusCode.OK, mapOf("message" to "Successfully deleted note"))
   }
 }
