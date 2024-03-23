@@ -61,7 +61,7 @@ DELETE {{baseUrl}}/notes/{{noteId}}
 # Adds a user to a note via their id's
 # @prompt noteId The id of the note
 # @prompt userId The id of the user to invite
-POST {{baseUrl}}/notes/{{noteId}}/{{userId}}
+POST {{baseUrl}}/notes/{{noteId}}/invite/{{userId}}
 Content-Type: application/json
 
 ###
@@ -78,6 +78,11 @@ Content-Type: application/json
   "password": "{{password}}",
   "username": "{{username}}"
 }
+
+###
+# Search for a user via email or username
+# @prompt q The partial email or username of the user
+GET {{baseUrl}}/user/search?q={{q}}
 
 ###
 

@@ -14,7 +14,7 @@ fun Routing.notes(noteController: NoteController = NoteController()) {
         put { noteController.update(this.context) }
         delete { noteController.delete(this.context) }
 
-        route("{userId}") {
+        route("invite/{userId}") {
           post { noteController.addUserToNote(this.context) }
         }
       }

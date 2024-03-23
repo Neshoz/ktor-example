@@ -59,5 +59,4 @@ Requirements marked with (Bonus) are not mandatory.
 - As a user, I want to delete a note.
 - (Bonus): As a user, I want to add other users to a note.
 - (Bonus): As a user, I want to update my email.
-- (Bonus): As a user, I want to write markdown in my notes and preview the output.
 - (Bonus): As an interviewer, I want to see that the candidate has written tests.

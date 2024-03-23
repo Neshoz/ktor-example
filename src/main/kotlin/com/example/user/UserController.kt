@@ -25,6 +25,15 @@ class UserController(private val userRepository: UserRepository = UserRepository
     call.respond(createdUser)
   }
 
+  suspend fun searchUsers(call: ApplicationCall) {
+    val searchTerm = call.request.queryParameters["q"] ?: return call.respondError(
+      HttpStatusCode.BadRequest,
+      "Missing parameter q"
+    )
+    val users = userRepository.searchUsers(searchTerm)
+    call.respond(users)
+  }
+
   suspend fun getById(call: ApplicationCall) {
     val id = UUID.fromString(call.parameters["id"])
     val user = userRepository.findById(id)

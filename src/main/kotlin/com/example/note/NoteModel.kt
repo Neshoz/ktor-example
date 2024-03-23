@@ -2,7 +2,6 @@ package com.example.note
 
 import com.example.utils.DateTimeSerializer
 import com.example.utils.UUIDSerializer
-import kotlinx.serialization.Contextual
 import kotlinx.serialization.Serializable
 import java.time.LocalDateTime
 import java.util.UUID
@@ -11,6 +10,8 @@ import java.util.UUID
 data class NoteModel(
   @Serializable(with = UUIDSerializer::class)
   val id: UUID,
+  @Serializable(with = UUIDSerializer::class)
+  val createdBy: UUID,
   val contents: String,
   @Serializable(with = DateTimeSerializer::class)
   val created: LocalDateTime,

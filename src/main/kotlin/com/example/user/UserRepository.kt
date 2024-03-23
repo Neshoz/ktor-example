@@ -20,6 +20,14 @@ object UserRepository {
       .firstOrNull()
   }
 
+  suspend fun searchUsers(term: String) = dbQuery {
+    val regex = "%${term.lowercase()}%"
+    UsersTable.selectAll()
+      .where { UsersTable.email.lowerCase().like(regex) }
+      .orWhere { UsersTable.username.lowerCase().like(regex) }
+      .map(UsersTable::toDto)
+  }
+
   suspend fun create(user: CreateUserPayload): UserDTO? = dbQuery {
     UsersTable.insert {
       it[email] = user.email

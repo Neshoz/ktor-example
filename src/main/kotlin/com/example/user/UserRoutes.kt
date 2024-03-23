@@ -6,6 +6,9 @@ import io.ktor.server.routing.*
 fun Routing.users(userController: UserController = UserController()) {
   route("user") {
     post { userController.create(this.context) }
+    route("search") {
+      get { userController.searchUsers(this.context) }
+    }
   }
   route("user/{id}") {
     authenticate {
