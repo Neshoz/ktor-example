@@ -11,8 +11,6 @@ services:
 
   db:
     image: postgres:15-alpine
-    volumes:
-      - ./tmp/db:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=notes
       - POSTGRES_USER=postgres
@@ -22,9 +20,9 @@ services:
       - 5432:5432
     healthcheck:
       test: [ "CMD", "pg_isready", "-q", "-d", "notes", "-U", "postgres" ]
-      interval: 10s
-      timeout: 10s
-      retries: 5
+      interval: 20s
+      timeout: 30s
+      retries: 10
 
   pgAdmin:
     image: dpage/pgadmin4

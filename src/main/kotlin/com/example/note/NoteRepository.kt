@@ -12,6 +12,7 @@ object NoteRepository {
   suspend fun createNote(userId: UUID, payload: CreateNotePayload): NoteModel = dbQuery {
     val note = NotesTable.insert {
       it[contents] = payload.contents
+      it[createdBy] = userId
       it[created] = LocalDateTime.now()
       it[modified] = LocalDateTime.now()
     }.resultedValues?.single()?.let(NotesTable::toModel) ?: throw InternalServerError()
