@@ -6,41 +6,18 @@ In this document you will find everything that is related to your task.
 
 Before you get started on your task, fork the repository, and work towards the forked version.
 
-## Architecture & Tech stack
+## Start the backend
 
-This project is built with the following tech stack
+The backend is built with Docker, so if you do not already have Docker installed on your system, you can install
+it here https://www.docker.com/products/docker-desktop/
 
-- Frontend: React, Vue or Angular
-- Backend: Kotlin
-- Database: PostgreSQL
-
-The project is built and started using Docker compose.
-To build and start the project, run the following command from the root: `docker-compose up --build`.
-You can install docker here https://www.docker.com/products/docker-desktop/
-
-## Backend
-
-The backend is written in Kotlin, documentation for endpoints can be found in the [api.http file](./api.http)
-
-## Database
-
-The database is a PostgreSQL database, you can access pgAdmin [in the browser](http://localhost:8888).
-
-Sign in with the following credentials
-- Email: admin@admin.com
-- Password: root
-
-Add a server with the following credentials
-- name (up to you)
-- Host name: db
-- Maintenance database: notes
-- Username: postgres
-- Password: root
+To start the backend, run `docker-compose up --build` from the root of the project.
+The backend is running on `localhost:8000`, and there is no CORS configured.
 
 ## Your assignment
 
 Your assignment is to implement a frontend to [the API](./api.http).
-The only requirement that we have on tech is that you implement it using either React, Angular or Vue, we prefer React.
+The only requirement that we have on tech is that you implement it using either React, Angular or Vue; we prefer React.
 
 You are free to use any libraries you want to accomplish the task, but be ready to
 explain your libraries of choice in the follow-up interview should they be questioned.
@@ -57,6 +34,8 @@ Requirements marked with (Bonus) are not mandatory.
 - As a user, I want to create a new note.
 - As a user, I want to update a note.
 - As a user, I want to delete a note.
+- As a user, I want to switch between light theme and dark theme.
+- As a user, I want to come back to the last not I was working with after I close and visit the app again.
 - (Bonus): As a user, I want to add other users to a note.
 - (Bonus): As a user, I want to update my email.
 - (Bonus): As an interviewer, I want to see that the candidate has written tests.
