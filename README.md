@@ -35,7 +35,7 @@ Requirements marked with (Bonus) are not mandatory.
 - As a user, I want to update a note.
 - As a user, I want to delete a note.
 - As a user, I want to switch between light theme and dark theme.
-- As a user, I want to come back to the last not I was working with after I close and visit the app again.
+- As a user, I want to come back to the last note I was working with after I close and visit the app again.
 - (Bonus): As a user, I want to add other users to a note.
 - (Bonus): As a user, I want to update my email.
 - (Bonus): As an interviewer, I want to see that the candidate has written tests.
